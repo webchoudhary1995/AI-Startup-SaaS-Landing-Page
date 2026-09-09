@@ -41,8 +41,8 @@ const plans: Plan[] = [
     key: "pro",
     name: "Pro",
     icon: <Rocket className="w-5 h-5" />,
-    monthlyPrice: 49,
-    yearlyPrice: 39,
+    monthlyPrice: 29,     // $29 / mo billed monthly
+    yearlyPrice: 24,      // $24 / mo billed yearly  (≈ 20% off)
     description: "For growing teams shipping production AI features.",
     features: [
       "50M tokens / month",
@@ -83,8 +83,11 @@ export default function Pricing() {
   const [yearly, setYearly] = useState(false);
 
   return (
-    <section id="pricing" className="relative py-24 px-4 sm:px-6 lg:px-8">
-      {/* Background glow */}
+    <section
+      id="pricing"
+      className="relative py-24 px-4 sm:px-6 lg:px-8 scroll-mt-20"
+    >
+      {/* Top accent line */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-px"
@@ -94,7 +97,7 @@ export default function Pricing() {
         }}
       />
 
-      {/* Heading */}
+      {/* ── Section heading ───────────────────────────────────────────── */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -113,20 +116,17 @@ export default function Pricing() {
           Start for free. Scale as you grow. No surprise bills.
         </p>
 
-        {/* Toggle */}
-        <div className="mt-8 inline-flex items-center gap-4 rounded-full border border-slate-700 bg-slate-900/80 px-3 py-2">
-          <span
-            className={`text-sm font-medium transition-colors ${
-              !yearly ? "text-white" : "text-slate-500"
-            }`}
-          >
+        {/* ── Monthly / Yearly toggle ──────────────────────────────────── */}
+        <div className="mt-8 inline-flex items-center gap-4 rounded-full border border-slate-700 bg-slate-900/80 px-4 py-2.5">
+          <span className={`text-sm font-medium transition-colors ${!yearly ? "text-white" : "text-slate-500"}`}>
             Monthly
           </span>
+
           <button
             role="switch"
             aria-checked={yearly}
             onClick={() => setYearly((v) => !v)}
-            className={`relative w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 ${
+            className={`relative w-12 h-6 rounded-full transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 cursor-pointer ${
               yearly ? "bg-gradient-to-r from-violet-600 to-cyan-500" : "bg-slate-700"
             }`}
           >
@@ -137,31 +137,31 @@ export default function Pricing() {
             />
             <span className="sr-only">Toggle yearly billing</span>
           </button>
-          <span
-            className={`text-sm font-medium transition-colors ${
-              yearly ? "text-white" : "text-slate-500"
-            }`}
-          >
+
+          <span className={`text-sm font-medium transition-colors ${yearly ? "text-white" : "text-slate-500"}`}>
             Yearly
           </span>
+
+          {/* 20% OFF badge — only when yearly active */}
           <AnimatePresence>
             {yearly && (
               <motion.span
                 key="discount"
-                initial={{ opacity: 0, scale: 0.8, x: -6 }}
-                animate={{ opacity: 1, scale: 1,   x: 0  }}
-                exit={{    opacity: 0, scale: 0.8, x: -6 }}
-                className="px-2 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-bold"
+                initial={{ opacity: 0, scale: 0.75, x: -6 }}
+                animate={{ opacity: 1, scale: 1,    x: 0  }}
+                exit={{    opacity: 0, scale: 0.75, x: -6 }}
+                transition={{ duration: 0.22 }}
+                className="px-2.5 py-0.5 rounded-full bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-xs font-bold whitespace-nowrap"
               >
-                −20% Off
+                20% OFF
               </motion.span>
             )}
           </AnimatePresence>
         </div>
       </motion.div>
 
-      {/* Cards */}
-      <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+      {/* ── Pricing cards ─────────────────────────────────────────────── */}
+      <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch">
         {plans.map((plan, i) => (
           <motion.div
             key={plan.key}
@@ -175,59 +175,66 @@ export default function Pricing() {
                 : "glass-card"
             }`}
           >
-            {/* Popular badge */}
+            {/* Most Popular badge */}
             {plan.popular && (
-              <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-violet-600 to-cyan-500 text-white text-xs font-bold shadow-lg shadow-violet-700/40 whitespace-nowrap">
+              <span className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-violet-600 to-cyan-500 text-white text-xs font-bold shadow-lg shadow-violet-700/40 whitespace-nowrap">
                 ✦ Most Popular
               </span>
             )}
 
-            {/* Icon + Name */}
-            <div className="flex items-center gap-3 mb-4">
-              <span
-                className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                  plan.popular
-                    ? "bg-gradient-to-br from-violet-600 to-cyan-500 text-white shadow-md shadow-violet-700/40"
-                    : "bg-slate-800 text-slate-300"
-                }`}
-              >
+            {/* Icon + plan name */}
+            <div className="flex items-center gap-3 mb-5">
+              <span className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                plan.popular
+                  ? "bg-gradient-to-br from-violet-600 to-cyan-500 text-white shadow-md shadow-violet-700/40"
+                  : "bg-slate-800 text-slate-300"
+              }`}>
                 {plan.icon}
               </span>
               <h3 className="text-lg font-bold text-white">{plan.name}</h3>
             </div>
 
-            {/* Price */}
-            <div className="mb-4 min-h-[72px] flex flex-col justify-center">
+            {/* Price display */}
+            <div className="mb-5 min-h-[76px] flex flex-col justify-center">
               {plan.monthlyPrice === null ? (
                 <p className="text-4xl font-extrabold text-white">Custom</p>
               ) : (
-                <div className="flex items-end gap-2">
+                <div className="flex items-end gap-2 flex-wrap">
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={yearly ? "yr" : "mo"}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
+                      initial={{ opacity: 0, y: 8  }}
+                      animate={{ opacity: 1, y: 0  }}
                       exit={{    opacity: 0, y: -8 }}
-                      transition={{ duration: 0.2 }}
+                      transition={{ duration: 0.18 }}
                       className="text-5xl font-extrabold text-white"
                     >
                       ${yearly ? plan.yearlyPrice : plan.monthlyPrice}
                     </motion.span>
                   </AnimatePresence>
-                  <span className="text-slate-400 text-sm mb-2">/ mo</span>
-                  {yearly && plan.yearlyPrice !== 0 && (
-                    <span className="mb-2 text-xs text-slate-500 line-through">
-                      ${plan.monthlyPrice}
+                  <div className="flex flex-col mb-1">
+                    <span className="text-slate-400 text-sm leading-tight">/ mo</span>
+                    {/* Strikethrough original price when yearly active */}
+                    {yearly && plan.monthlyPrice !== 0 && (
+                      <span className="text-xs text-slate-600 line-through leading-tight">
+                        ${plan.monthlyPrice}/mo
+                      </span>
+                    )}
+                  </div>
+                  {/* Yearly savings note */}
+                  {yearly && plan.yearlyPrice !== null && plan.yearlyPrice !== 0 && (
+                    <span className="mb-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/15 border border-emerald-500/25 text-emerald-400">
+                      Save 20%
                     </span>
                   )}
                 </div>
               )}
-              <p className="text-sm text-slate-400 mt-1">{plan.description}</p>
+              <p className="text-sm text-slate-400 mt-1.5 leading-relaxed">{plan.description}</p>
             </div>
 
-            {/* CTA */}
+            {/* CTA button */}
             <button
-              className={`w-full py-3 px-4 rounded-xl text-sm font-semibold transition-all duration-200 mb-7 ${
+              className={`w-full py-3 px-4 rounded-xl text-sm font-semibold transition-all duration-200 mb-7 cursor-pointer ${
                 plan.popular
                   ? "btn-primary"
                   : "border border-slate-600 text-slate-200 hover:border-violet-500 hover:text-white bg-slate-800/50 hover:bg-slate-800"
@@ -236,14 +243,12 @@ export default function Pricing() {
               {plan.cta}
             </button>
 
-            {/* Feature list */}
-            <ul className="flex flex-col gap-2.5">
+            {/* Features */}
+            <ul className="flex flex-col gap-2.5 mt-auto">
               {plan.features.map((f) => (
                 <li key={f} className="flex items-start gap-2.5 text-sm text-slate-300">
                   <Check
-                    className={`w-4 h-4 shrink-0 mt-0.5 ${
-                      plan.popular ? "text-cyan-400" : "text-violet-400"
-                    }`}
+                    className={`w-4 h-4 shrink-0 mt-0.5 ${plan.popular ? "text-cyan-400" : "text-violet-400"}`}
                     strokeWidth={2.5}
                   />
                   {f}
@@ -260,7 +265,7 @@ export default function Pricing() {
         whileInView={{ opacity: 1 }}
         viewport={{ once: true }}
         transition={{ delay: 0.4 }}
-        className="mt-12 text-center text-sm text-slate-500"
+        className="mt-14 text-center text-sm text-slate-500"
       >
         All plans include a 14-day free trial · No credit card required · Cancel anytime
       </motion.p>

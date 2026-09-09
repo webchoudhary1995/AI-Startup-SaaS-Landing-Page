@@ -117,6 +117,17 @@ body {
               linear-gradient(135deg, #a78bfa, #22d3ee) border-box;
 }
 
+/* ── Section scroll offset (clears fixed navbar ~68px + breathing room) ─── */
+section[id] {
+  scroll-margin-top: 80px;
+}
+
+/* ── Modal top-bar gradient reuse ────────────────────────────────────────── */
+@keyframes gradient-shift-slow {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
 /* ── Scrollbar styling ───────────────────────────────────────────────────── */
 ::-webkit-scrollbar          { width: 6px; }
 ::-webkit-scrollbar-track    { background: #0f172a; }

@@ -1,8 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, type Easing } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
+
+const EASE: Easing = "easeInOut";
 
 const faqs = [
   {
@@ -38,11 +40,15 @@ const faqs = [
 export default function FAQ() {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
 
-  const toggle = (i: number) => setOpenIdx((prev) => (prev === i ? null : i));
+  const toggle = (i: number) =>
+    setOpenIdx((prev) => (prev === i ? null : i));
 
   return (
-    <section id="faqs" className="relative py-24 px-4 sm:px-6 lg:px-8">
-      {/* Heading */}
+    <section
+      id="faqs"
+      className="relative py-24 px-4 sm:px-6 lg:px-8 scroll-mt-20"
+    >
+      {/* ── Heading ───────────────────────────────────────────────────── */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -68,7 +74,7 @@ export default function FAQ() {
         </p>
       </motion.div>
 
-      {/* Accordion */}
+      {/* ── Accordion ─────────────────────────────────────────────────── */}
       <div className="max-w-3xl mx-auto flex flex-col gap-3">
         {faqs.map((faq, i) => {
           const isOpen = openIdx === i;
@@ -85,41 +91,39 @@ export default function FAQ() {
                   : "border-slate-800/70 bg-slate-900/40 hover:border-slate-700"
               }`}
             >
+              {/* Question row — full-width clickable */}
               <button
                 onClick={() => toggle(i)}
-                className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left"
+                className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left cursor-pointer"
                 aria-expanded={isOpen}
+                aria-controls={`faq-answer-${i}`}
               >
-                <span
-                  className={`font-semibold text-sm sm:text-base transition-colors ${
-                    isOpen ? "text-white" : "text-slate-200"
-                  }`}
-                >
+                <span className={`font-semibold text-sm sm:text-base transition-colors ${
+                  isOpen ? "text-white" : "text-slate-200"
+                }`}>
                   {faq.q}
                 </span>
-                <span
-                  className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 ${
-                    isOpen
-                      ? "bg-violet-600 text-white"
-                      : "bg-slate-800 text-slate-400"
-                  }`}
-                >
-                  {isOpen ? (
-                    <Minus className="w-3.5 h-3.5" strokeWidth={2.5} />
-                  ) : (
-                    <Plus className="w-3.5 h-3.5" strokeWidth={2.5} />
-                  )}
+
+                {/* +/− icon circle */}
+                <span className={`shrink-0 w-7 h-7 rounded-full flex items-center justify-center transition-all duration-300 ${
+                  isOpen ? "bg-violet-600 text-white" : "bg-slate-800 text-slate-400"
+                }`}>
+                  {isOpen
+                    ? <Minus className="w-3.5 h-3.5" strokeWidth={2.5} />
+                    : <Plus  className="w-3.5 h-3.5" strokeWidth={2.5} />}
                 </span>
               </button>
 
+              {/* Animated answer */}
               <AnimatePresence initial={false}>
                 {isOpen && (
                   <motion.div
-                    key="answer"
+                    key={`answer-${i}`}
+                    id={`faq-answer-${i}`}
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{    height: 0,      opacity: 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    transition={{ duration: 0.3, ease: EASE }}
                     className="overflow-hidden"
                   >
                     <p className="px-6 pb-5 text-sm sm:text-base text-slate-400 leading-relaxed">
