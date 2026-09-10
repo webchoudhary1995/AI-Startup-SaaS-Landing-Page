@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import {
   Zap,
   Twitter,
@@ -14,31 +15,31 @@ import {
 
 const footerLinks = {
   Product: [
-    { label: "Features",     href: "#features" },
-    { label: "Pricing",      href: "#pricing"  },
-    { label: "Changelog",    href: "#"         },
-    { label: "Roadmap",      href: "#"         },
-    { label: "API Docs",     href: "#"         },
-    { label: "Status Page",  href: "#"         },
+    { label: "Features",    href: "/features"  },
+    { label: "Pricing",     href: "/#pricing"  },
+    { label: "Changelog",   href: "/changelog" },
+    { label: "Roadmap",     href: "/roadmap"   },
+    { label: "API Docs",    href: "/api-docs"  },
+    { label: "Status Page", href: "/status"    },
   ],
   Company: [
-    { label: "About",        href: "#" },
-    { label: "Blog",         href: "#" },
-    { label: "Careers",      href: "#" },
-    { label: "Press Kit",    href: "#" },
+    { label: "About",     href: "/about"     },
+    { label: "Blog",      href: "/blog"      },
+    { label: "Careers",   href: "/careers"   },
+    { label: "Press Kit", href: "/press-kit" },
   ],
   Developers: [
-    { label: "Documentation", href: "#" },
-    { label: "SDK Reference", href: "#" },
-    { label: "Playground",    href: "#" },
-    { label: "Community",     href: "#" },
-    { label: "GitHub",        href: "#" },
+    { label: "Documentation", href: "/docs"          },
+    { label: "SDK Reference", href: "/sdk-reference" },
+    { label: "Playground",    href: "/playground"    },
+    { label: "Community",     href: "/community"     },
+    { label: "GitHub",        href: "https://github.com" },
   ],
   Legal: [
-    { label: "Privacy Policy",    href: "#" },
-    { label: "Terms of Service",  href: "#" },
-    { label: "Cookie Policy",     href: "#" },
-    { label: "DPA",               href: "#" },
+    { label: "Privacy Policy",   href: "/privacy" },
+    { label: "Terms of Service", href: "/terms"   },
+    { label: "Cookie Policy",    href: "/cookies" },
+    { label: "DPA",              href: "/dpa"     },
   ],
 };
 
@@ -156,12 +157,12 @@ export default function Footer() {
               <ul className="flex flex-col gap-2.5">
                 {links.map((link) => (
                   <li key={link.label}>
-                    <a
+                    <Link
                       href={link.href}
                       className="text-sm text-slate-500 hover:text-slate-200 transition-colors duration-200"
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
